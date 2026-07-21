@@ -1,0 +1,22 @@
+# DoomScroll Detox - client/requirements.txt
+#
+# Install with:
+#   pip install -r requirements.txt
+#
+# Platform notes:
+#   - pywinctl provides cross-platform active-window access, but still
+#     leans on OS-native bindings under the hood for some platforms:
+#       macOS:  pip install pyobjc-framework-Quartz pyobjc-framework-Cocoa
+#       Linux:  pip install python3-xlib ewmh
+#   - Linux TTS (pyttsx3) needs the espeak/espeak-ng system package:
+#       sudo apt-get install espeak      (Debian/Ubuntu)
+#       sudo dnf install espeak-ng       (Fedora)
+#       sudo pacman -S espeak-ng         (Arch)
+
+PyQt6>=6.6.0
+pywinctl>=0.3
+easyocr>=1.7.1
+pyttsx3>=2.90
+pillow>=10.0.0
+requests>=2.31.0
+numpy>=1.26.0

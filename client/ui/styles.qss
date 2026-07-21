@@ -1,0 +1,397 @@
+/* ==========================================================================
+   DoomScroll Detox — "Dark Mode Synthwave" global stylesheet
+   client/ui/styles.qss
+
+   Palette
+   -------
+   --bg-void       #0a0a10   deepest background (windows, overlay backdrop)
+   --bg-panel      #14131c   card / panel surfaces
+   --bg-input      #1b1a26   input fields, list widgets
+   --border        #2c2a3d   default hairline borders
+   --border-hover  #6a3fd6   neon purple border (hover / focus)
+   --neon-purple   #b967ff   primary accent
+   --neon-purple-2 #8b5cf6   secondary/darker purple (gradients, pressed)
+   --hot-pink      #ff2e97   secondary accent, danger/emphasis
+   --text-primary  #f5f4fa   headline text
+   --text-secondary #9a94ab  muted / helper text
+   --text-faint    #625d75   disabled / tick-label text
+
+   Loaded once, app-wide, via QApplication.setStyleSheet() in main.py.
+   No widget should call setStyleSheet() locally anymore — use objectName
+   or class selectors below to hook into this sheet instead.
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   Global defaults
+   ------------------------------------------------------------------------- */
+
+* {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    outline: none;
+}
+
+QWidget {
+    background-color: #0a0a10;
+    color: #f5f4fa;
+    font-size: 14px;
+}
+
+QMainWindow {
+    background-color: #0a0a10;
+    border: none;
+}
+
+QToolTip {
+    background-color: #1b1a26;
+    color: #f5f4fa;
+    border: 1px solid #6a3fd6;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+/* -------------------------------------------------------------------------
+   Typography hierarchy
+   ------------------------------------------------------------------------- */
+
+QLabel#titleLabel {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+QLabel#subtitleLabel {
+    color: #9a94ab;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+QLabel#sectionLabel {
+    color: #d6b8ff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+QLabel#severityLabel {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+QLabel#tickLabel {
+    color: #625d75;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+QLabel#roastLabel {
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+QLabel#challengeLabel {
+    color: #b8b2c9;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+QLabel#errorLabel {
+    color: #ff2e97;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* -------------------------------------------------------------------------
+   Card / panel surfaces (Dashboard sections)
+   ------------------------------------------------------------------------- */
+
+QFrame#card {
+    background-color: #14131c;
+    border: 1px solid #2c2a3d;
+    border-radius: 16px;
+}
+
+QFrame#card:hover {
+    border: 1px solid #4a3566;
+}
+
+/* -------------------------------------------------------------------------
+   Buttons
+   ------------------------------------------------------------------------- */
+
+QPushButton {
+    background-color: #1b1a26;
+    color: #f5f4fa;
+    border: 1px solid #2c2a3d;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+QPushButton:hover {
+    background-color: #241f33;
+    border: 1px solid #6a3fd6;
+    color: #ffffff;
+}
+
+QPushButton:pressed {
+    background-color: #17131f;
+    border: 1px solid #ff2e97;
+}
+
+QPushButton:disabled {
+    background-color: #14131c;
+    color: #625d75;
+    border: 1px solid #201f2b;
+}
+
+/* Primary call-to-action button ("LOCK IN" / "Unlock") — neon gradient,
+   the loudest element on screen by design. */
+QPushButton#lockInButton {
+    background-color: qlineargradient(
+        x1:0, y1:0, x2:1, y2:0,
+        stop:0 #8b5cf6, stop:1 #ff2e97
+    );
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+QPushButton#lockInButton:hover {
+    background-color: qlineargradient(
+        x1:0, y1:0, x2:1, y2:0,
+        stop:0 #a274ff, stop:1 #ff57ab
+    );
+}
+
+QPushButton#lockInButton:pressed {
+    background-color: qlineargradient(
+        x1:0, y1:0, x2:1, y2:0,
+        stop:0 #7440d6, stop:1 #d6237c
+    );
+}
+
+/* -------------------------------------------------------------------------
+   Text inputs
+   ------------------------------------------------------------------------- */
+
+QLineEdit {
+    background-color: #1b1a26;
+    color: #ffffff;
+    border: 2px solid #2c2a3d;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    selection-background-color: #ff2e97;
+    selection-color: #ffffff;
+}
+
+QLineEdit:hover {
+    border: 2px solid #4a3566;
+}
+
+QLineEdit:focus {
+    border: 2px solid #b967ff;
+}
+
+QLineEdit:disabled {
+    color: #625d75;
+    border: 2px solid #201f2b;
+}
+
+/* -------------------------------------------------------------------------
+   Dropdowns
+   ------------------------------------------------------------------------- */
+
+QComboBox {
+    background-color: #1b1a26;
+    color: #ffffff;
+    border: 2px solid #2c2a3d;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+QComboBox:hover {
+    border: 2px solid #4a3566;
+}
+
+QComboBox:focus, QComboBox:on {
+    border: 2px solid #b967ff;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 28px;
+}
+
+QComboBox::down-arrow {
+    width: 10px;
+    height: 10px;
+    background-color: #b967ff;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #1b1a26;
+    color: #ffffff;
+    border: 1px solid #6a3fd6;
+    border-radius: 8px;
+    padding: 4px;
+    selection-background-color: #6a3fd6;
+    selection-color: #ffffff;
+    outline: none;
+}
+
+/* -------------------------------------------------------------------------
+   Checklists (blacklist selector)
+   ------------------------------------------------------------------------- */
+
+QListWidget {
+    background-color: #1b1a26;
+    color: #f5f4fa;
+    border: 2px solid #2c2a3d;
+    border-radius: 8px;
+    padding: 6px;
+    font-size: 14px;
+}
+
+QListWidget:focus {
+    border: 2px solid #b967ff;
+}
+
+QListWidget::item {
+    padding: 8px 6px;
+    border-radius: 6px;
+}
+
+QListWidget::item:hover {
+    background-color: #241f33;
+}
+
+QListWidget::item:selected {
+    background-color: transparent;
+    color: #f5f4fa;
+}
+
+QListWidget::indicator {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #4a3566;
+    border-radius: 4px;
+    background-color: #1b1a26;
+}
+
+QListWidget::indicator:checked {
+    background-color: #ff2e97;
+    border: 2px solid #ff2e97;
+}
+
+QListWidget::indicator:hover {
+    border: 2px solid #b967ff;
+}
+
+/* -------------------------------------------------------------------------
+   Sliders (roast severity)
+   ------------------------------------------------------------------------- */
+
+QSlider::groove:horizontal {
+    height: 6px;
+    background: #2c2a3d;
+    border-radius: 3px;
+}
+
+QSlider::sub-page:horizontal {
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:0,
+        stop:0 #8b5cf6, stop:1 #ff2e97
+    );
+    border-radius: 3px;
+}
+
+QSlider::add-page:horizontal {
+    background: #2c2a3d;
+    border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+    background: #ffffff;
+    border: 3px solid #b967ff;
+    width: 18px;
+    height: 18px;
+    margin: -7px 0;
+    border-radius: 10px;
+}
+
+QSlider::handle:horizontal:hover {
+    border: 3px solid #ff2e97;
+}
+
+/* -------------------------------------------------------------------------
+   Soft roast banner (Level 2 intervention)
+   ------------------------------------------------------------------------- */
+
+SoftRoastOverlay {
+    background-color: transparent;
+}
+
+QWidget#softRoastBanner {
+    background-color: rgba(20, 19, 28, 240);
+    border: 2px solid #ff2e97;
+    border-radius: 14px;
+}
+
+QLabel#softRoastLabel {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+QPushButton#softRoastDismiss {
+    background-color: #1b1a26;
+    border: 1px solid #4a3566;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+QPushButton#softRoastDismiss:hover {
+    border: 1px solid #ff2e97;
+    color: #ff2e97;
+}
+
+/* -------------------------------------------------------------------------
+   Lockdown overlay (full-screen blocker)
+   ------------------------------------------------------------------------- */
+
+LockdownOverlay {
+    background-color: rgba(10, 10, 16, 235);
+}
+
+/* -------------------------------------------------------------------------
+   Dialog / message box buttons — keep them on-brand instead of native OS
+   default styling
+   ------------------------------------------------------------------------- */
+
+QMessageBox {
+    background-color: #14131c;
+}
+
+QMessageBox QLabel {
+    color: #f5f4fa;
+    font-size: 13px;
+}
+
+QMessageBox QPushButton {
+    min-width: 80px;
+}

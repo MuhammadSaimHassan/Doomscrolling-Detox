@@ -1,0 +1,8 @@
+# DoomScroll Detox - backend/requirements.txt
+#
+# Deployed via Vercel's Python runtime (vercel.json declares
+# api/index.py as the single unified serverless function).
+
+flask>=3.0.0
+google-generativeai>=0.8.0
+supabase>=2.4.0

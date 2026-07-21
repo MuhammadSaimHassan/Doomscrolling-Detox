@@ -1,0 +1,24 @@
+.env
+.venv/
+.python312/
+python-*-amd64.exe
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local app state and generated output
+.test_state/
+dist/
+build/
+*.spec.bak
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
