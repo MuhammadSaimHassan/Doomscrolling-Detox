@@ -39,7 +39,7 @@ if os.path.exists(_root_env):
                 _k, _v = _line.split("=", 1)
                 os.environ.setdefault(_k.strip(), _v.strip().strip("'\""))
 
-from flask import Flask, request, jsonify  # noqa: E402
+from flask import Flask, request, jsonify, send_from_directory  # noqa: E402
 from google.api_core.exceptions import ResourceExhausted, GoogleAPIError  # noqa: E402
 
 import ai_service  # noqa: E402
@@ -51,12 +51,17 @@ app = Flask(__name__)
 
 
 # --------------------------------------------------------------------------
-# Landing route
+# Landing route -- Serves single-page web app studio
 # --------------------------------------------------------------------------
 
 @app.route("/", methods=["GET"])
 def status_check():
+    public_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "public")
+    index_file = os.path.join(public_dir, "index.html")
+    if os.path.exists(index_file):
+        return send_from_directory(public_dir, "index.html")
     return jsonify({"status": "active"}), 200
+
 
 
 # --------------------------------------------------------------------------

@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoomScroll Detox — AI Digital Focus Studio</title>
+  <meta name="description" content="AI-powered doomscroll blocker, live voice shamer, and study quiz lock-out studio.">
+  
+  <!-- Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-void: #0a0a10;
+      --bg-surface: #12121c;
+      --bg-card: rgba(22, 22, 34, 0.75);
+      --bg-card-hover: rgba(30, 30, 48, 0.85);
+      --neon-purple: #b967ff;
+      --neon-pink: #ff2e97;
+      --neon-cyan: #00f0ff;
+      --text-main: #f0f0f8;
+      --text-muted: #8a8aa0;
+      --accent-glow: rgba(185, 103, 255, 0.25);
+      --pink-glow: rgba(255, 46, 151, 0.25);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glowing: rgba(185, 103, 255, 0.4);
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(185, 103, 255, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(255, 46, 151, 0.12) 0%, transparent 40%);
+    }
+
+    /* Header */
+    header {
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 16, 0.8);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .brand-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2;
+    }
+
+    .brand-text h1 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ffffff, var(--neon-purple), var(--neon-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-text p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+      header {
+        padding: 15px 20px;
+      }
+    }
+
+    /* Card Styling */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .card:hover {
+      border-color: var(--border-glowing);
+      box-shadow: 0 20px 40px rgba(185, 103, 255, 0.15);
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title svg {
+      stroke: var(--neon-purple);
+    }
+
+    /* Form Inputs */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(10, 10, 16, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .input-field:focus {
+      border-color: var(--neon-purple);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    /* Timer Display */
+    .timer-box {
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(180deg, rgba(185, 103, 255, 0.05), rgba(10, 10, 16, 0.8));
+      border: 1px solid rgba(185, 103, 255, 0.2);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .timer-display {
+      font-family: var(--font-heading);
+      font-size: 4rem;
+      font-weight: 900;
+      letter-spacing: -2px;
+      background: linear-gradient(180deg, #ffffff, var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px var(--accent-glow);
+    }
+
+    .timer-status {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--neon-pink);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 20px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+      color: #ffffff;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(255, 46, 151, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ff2e4c, var(--neon-pink));
+      color: #ffffff;
+      box-shadow: 0 4px 20px var(--pink-glow);
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(255, 46, 151, 0.5);
+    }
+
+    /* Distraction Grid */
+    .distraction-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+    }
+
+    .distraction-chip {
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .distraction-chip:hover {
+      background: rgba(255, 46, 151, 0.12);
+      border-color: var(--neon-pink);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px var(--pink-glow);
+    }
+
+    /* Stats Row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .stat-box {
+      background: rgba(10, 10, 16, 0.5);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--neon-purple);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    /* Fullscreen Lockdown Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10, 10, 16, 0.95);
+      backdrop-filter: blur(25px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-card {
+      max-width: 580px;
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--neon-pink);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: 0 0 50px rgba(255, 46, 151, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+      animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header h2 {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--neon-pink);
+      margin-bottom: 8px;
+    }
+
+    .modal-header p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .question-box {
+      background: rgba(10, 10, 16, 0.8);
+      border: 1px solid var(--border-glowing);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    .answer-feedback {
+      font-size: 0.9rem;
+      font-weight: 600;
+      min-height: 24px;
+    }
+
+    .answer-feedback.error {
+      color: #ff4d6d;
+    }
+
+    .answer-feedback.success {
+      color: #00f0ff;
+    }
+
+    /* Live Speech Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 500;
+    }
+
+    .toast {
+      background: rgba(18, 18, 28, 0.95);
+      border: 1px solid var(--neon-purple);
+      box-shadow: 0 10px 30px var(--accent-glow);
+      border-radius: var(--radius-md);
+      padding: 16px 24px;
+      max-width: 380px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      backdrop-filter: blur(12px);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .toast.active {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast-speaker {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 46, 151, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .toast-speaker svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--neon-pink);
+    }
+
+    .toast-content h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--neon-purple);
+      margin-bottom: 2px;
+    }
+
+    .toast-content p {
+      font-size: 0.85rem;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-subtle);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>DoomScroll Detox</h1>
+        <p>AI Digital Focus Studio & Voice Shamer</p>
+      </div>
+    </div>
+
+    <div class="status-badge">
+      <div class="status-dot"></div>
+      <span>Gemini 2.0 AI Live</span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Left Column: Study Setup & Focus Timer -->
+    <div class="card">
+      <div class="card-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span>Focus Session Setup</span>
+      </div>
+
+      <div class="input-group">
+        <label for="studentMajor">Academic Major / Field</label>
+        <input type="text" id="studentMajor" class="input-field" value="Computer Science" placeholder="e.g. Computer Science, Medicine, Law">
+      </div>
+
+      <div class="input-group">
+        <label for="academicGoal">Academic Goal</label>
+        <input type="text" id="academicGoal" class="input-field" value="Pass Data Structures Midterm" placeholder="e.g. Ace finals, Master Organic Chemistry">
+      </div>
+
+      <div class="input-group">
+        <label for="personalityMode">AI Personality Persona</label>
+        <select id="personalityMode" class="input-field">
+          <option value="Sarcastic">Sarcastic & Witty (Default)</option>
+          <option value="Passive-Aggressive">Passive-Aggressive Bestie</option>
+          <option value="Disappointed Parent">Disappointed Parent</option>
+          <option value="Military Drill Sergeant">Drill Sergeant</option>
+        </select>
+      </div>
+
+      <!-- Timer Box -->
+      <div class="timer-box">
+        <div class="timer-status" id="timerStatusLabel">Session Ready</div>
+        <div class="timer-display" id="timerDisplay">25:00</div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="startTimerBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Start Focus Session
+          </button>
+          <button class="btn btn-secondary" id="resetTimerBtn">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Doomscroll Simulator & AI Voice Shamer -->
+    <div class="card">
+      <div class="card-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span>Doomscroll Trap Simulator</span>
+      </div>
+
+      <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
+        Simulate getting distracted or test AI Voice Roasts & Lockdown Quizzes live!
+      </p>
+
+      <div class="distraction-grid">
+        <div class="distraction-chip" data-app="TikTok Shorts">📱 TikTok</div>
+        <div class="distraction-chip" data-app="Instagram Reels">📸 IG Reels</div>
+        <div class="distraction-chip" data-app="YouTube Shorts">▶️ YouTube Shorts</div>
+        <div class="distraction-chip" data-app="Reddit Doomscroll">🤖 Reddit Feed</div>
+        <div class="distraction-chip" data-app="Twitter / X Timeline">🐦 Twitter / X</div>
+        <div class="distraction-chip" data-app="Twitch Stream">🎮 Twitch Stream</div>
+      </div>
+
+      <div class="input-group">
+        <label for="customDistraction">Or Custom Distraction Title</label>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="customDistraction" class="input-field" placeholder="e.g. Shopping on Amazon, Watching Anime">
+          <button class="btn btn-danger" id="triggerRoastBtn" style="white-space: nowrap;">
+            Roast Me 🔥
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-number" id="distractionsCount">0</div>
+          <div class="stat-label">Traps Blocked</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number" id="quizzesPassedCount">0</div>
+          <div class="stat-label">Quizzes Passed</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number" id="focusMinutesCount">0</div>
+          <div class="stat-label">Focus Mins</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Fullscreen Lockdown Quiz Modal -->
+  <div class="modal-overlay" id="quizModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>🔒 Study Lockdown Triggered</h2>
+        <p id="modalSubtext">You got caught doomscrolling! Answer this AI-generated conceptual study question to unlock your session.</p>
+      </div>
+
+      <div class="question-box" id="questionText">
+        Loading study question from Gemini AI...
+      </div>
+
+      <div class="input-group">
+        <input type="text" id="userAnswerInput" class="input-field" placeholder="Type your answer here..." autocomplete="off">
+      </div>
+
+      <div class="answer-feedback" id="answerFeedback"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="submitAnswerBtn">Submit Answer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Speech Toast -->
+  <div class="toast-container">
+    <div class="toast" id="roastToast">
+      <div class="toast-speaker">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+      </div>
+      <div class="toast-content">
+        <h4>AI Audio Roast</h4>
+        <p id="roastToastMessage">Loading roast...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    DoomScroll Detox — Privacy-First AI Focus Studio • Deployed on Vercel Cloud
+  </footer>
+
+  <!-- App Script Logic -->
+  <script>
+    // -- State
+    let timerInterval = null;
+    let timerTotalSeconds = 25 * 60;
+    let timerRemainingSeconds = 25 * 60;
+    let isTimerRunning = false;
+
+    let totalDistractions = 0;
+    let totalQuizzesPassed = 0;
+    let totalFocusSeconds = 0;
+    let currentModelAnswer = "";
+
+    // -- Elements
+    const studentMajorInput = document.getElementById("studentMajor");
+    const academicGoalInput = document.getElementById("academicGoal");
+    const personalitySelect = document.getElementById("personalityMode");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const timerStatusLabel = document.getElementById("timerStatusLabel");
+    const startTimerBtn = document.getElementById("startTimerBtn");
+    const resetTimerBtn = document.getElementById("resetTimerBtn");
+
+    const customDistractionInput = document.getElementById("customDistraction");
+    const triggerRoastBtn = document.getElementById("triggerRoastBtn");
+    const distractionChips = document.querySelectorAll(".distraction-chip");
+
+    const distractionsCount = document.getElementById("distractionsCount");
+    const quizzesPassedCount = document.getElementById("quizzesPassedCount");
+    const focusMinutesCount = document.getElementById("focusMinutesCount");
+
+    const quizModal = document.getElementById("quizModal");
+    const questionText = document.getElementById("questionText");
+    const userAnswerInput = document.getElementById("userAnswerInput");
+    const submitAnswerBtn = document.getElementById("submitAnswerBtn");
+    const answerFeedback = document.getElementById("answerFeedback");
+
+    const roastToast = document.getElementById("roastToast");
+    const roastToastMessage = document.getElementById("roastToastMessage");
+
+    // -- Speech Synthesis (TTS)
+    function speakRoastText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Stop any ongoing speech
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        
+        // Try to select an English voice
+        const voices = window.speechSynthesis.getVoices();
+        const englishVoice = voices.find(v => v.lang.includes("en"));
+        if (englishVoice) {
+          utterance.voice = englishVoice;
+        }
+        
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function showToast(message) {
+      roastToastMessage.textContent = message;
+      roastToast.classList.add("active");
+      speakRoastText(message);
+      
+      setTimeout(() => {
+        roastToast.classList.remove("active");
+      }, 7000);
+    }
+
+    // -- Timer Logic
+    function updateTimerUI() {
+      const mins = Math.floor(timerRemainingSeconds / 60);
+      const secs = timerRemainingSeconds % 60;
+      timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      if (isTimerRunning) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        startTimerBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Resume Session`;
+        timerStatusLabel.textContent = "Session Paused";
+        return;
+      }
+
+      isTimerRunning = true;
+      startTimerBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause Session`;
+      timerStatusLabel.textContent = "Focus Active — Tab Guard On";
+
+      timerInterval = setInterval(() => {
+        if (timerRemainingSeconds > 0) {
+          timerRemainingSeconds--;
+          totalFocusSeconds++;
+          focusMinutesCount.textContent = Math.floor(totalFocusSeconds / 60);
+          updateTimerUI();
+        } else {
+          clearInterval(timerInterval);
+          isTimerRunning = false;
+          timerStatusLabel.textContent = "Session Completed! 🎉";
+          showToast("Great job! You completed your focus session without doomscrolling.");
+        }
+      }, 1000);
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      timerRemainingSeconds = 25 * 60;
+      startTimerBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Start Focus Session`;
+      timerStatusLabel.textContent = "Session Ready";
+      updateTimerUI();
+    }
+
+    // -- Auto-detect Tab Visibility Switching
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && isTimerRunning) {
+        // User switched away to another tab while timer was active!
+        triggerDistraction("Switching Browser Tabs");
+      }
+    });
+
+    // -- Backend AI Calls
+    async function triggerDistraction(appTitle) {
+      totalDistractions++;
+      distractionsCount.textContent = totalDistractions;
+
+      const major = studentMajorInput.value || "Computer Science";
+      const goal = academicGoalInput.value || "Pass exams";
+      const persona = personalitySelect.value || "Sarcastic";
+
+      // 1. Fetch AI Roast from Vercel Backend
+      try {
+        const roastRes = await fetch("/api/roast", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            distraction_text: appTitle,
+            app_title: appTitle,
+            student_major: major,
+            goal: goal,
+            personality_mode: persona
+          })
+        });
+
+        const roastData = await roastRes.json();
+        const roastText = roastData.roast || `bestie, you're cooked for doomscrolling ${appTitle}. Get back to studying!`;
+        showToast(roastText);
+      } catch (err) {
+        showToast(`Bestie, put down ${appTitle} and get back to studying ${major}!`);
+      }
+
+      // 2. Fetch Quiz Question & Open Modal
+      openQuizModal(appTitle, major, goal);
+    }
+
+    async function openQuizModal(appTitle, major, goal) {
+      questionText.textContent = "Generating AI study question...";
+      answerFeedback.textContent = "";
+      userAnswerInput.value = "";
+      quizModal.classList.add("active");
+
+      try {
+        const verifyRes = await fetch("/api/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "generate_question",
+            student_major: major,
+            goal: goal
+          })
+        });
+
+        const data = await verifyRes.json();
+        if (data.question) {
+          questionText.textContent = data.question;
+          currentModelAnswer = data.model_answer || "";
+        } else {
+          questionText.textContent = `In one sentence, explain one core concept from ${major} relevant to: ${goal}.`;
+          currentModelAnswer = "";
+        }
+      } catch (err) {
+        questionText.textContent = `In one sentence, explain one core concept from ${major} relevant to: ${goal}.`;
+        currentModelAnswer = "";
+      }
+    }
+
+    async function submitQuizAnswer() {
+      const answer = userAnswerInput.value.trim();
+      if (!answer) {
+        answerFeedback.className = "answer-feedback error";
+        answerFeedback.textContent = "Please enter an answer to unlock.";
+        return;
+      }
+
+      answerFeedback.className = "answer-feedback";
+      answerFeedback.textContent = "Evaluating answer with Gemini AI...";
+
+      const major = studentMajorInput.value || "Computer Science";
+      const goal = academicGoalInput.value || "Pass exams";
+      const questionStr = questionText.textContent;
+
+      try {
+        const res = await fetch("/api/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "verify_answer",
+            student_major: major,
+            goal: goal,
+            question: questionStr,
+            model_answer: currentModelAnswer,
+            user_answer: answer
+          })
+        });
+
+        const data = await res.json();
+        if (data.pass) {
+          answerFeedback.className = "answer-feedback success";
+          answerFeedback.textContent = "Pass! Session Unlocked. Great job!";
+          totalQuizzesPassed++;
+          quizzesPassedCount.textContent = totalQuizzesPassed;
+
+          setTimeout(() => {
+            quizModal.classList.remove("active");
+          }, 1200);
+        } else {
+          answerFeedback.className = "answer-feedback error";
+          answerFeedback.textContent = data.feedback || "Answer rejected. Try explaining the concept more clearly.";
+        }
+      } catch (err) {
+        // Fallback pass if network error occurs
+        answerFeedback.className = "answer-feedback success";
+        answerFeedback.textContent = "Unlocked!";
+        totalQuizzesPassed++;
+        quizzesPassedCount.textContent = totalQuizzesPassed;
+        setTimeout(() => {
+          quizModal.classList.remove("active");
+        }, 1000);
+      }
+    }
+
+    // -- Event Listeners
+    startTimerBtn.addEventListener("click", startTimer);
+    resetTimerBtn.addEventListener("click", resetTimer);
+
+    triggerRoastBtn.addEventListener("click", () => {
+      const customVal = customDistractionInput.value.trim() || "Doomscrolling";
+      triggerDistraction(customVal);
+    });
+
+    distractionChips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        const appName = chip.getAttribute("data-app");
+        triggerDistraction(appName);
+      });
+    });
+
+    submitAnswerBtn.addEventListener("click", submitQuizAnswer);
+    userAnswerInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        submitQuizAnswer();
+      }
+    });
+
+    // Populate voices for Web Speech
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  </script>
+</body>
+</html>
