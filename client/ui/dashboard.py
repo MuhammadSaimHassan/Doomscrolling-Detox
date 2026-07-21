@@ -31,6 +31,7 @@ from PyQt6.QtWidgets import (
     QListWidgetItem,
     QMessageBox,
     QPushButton,
+    QScrollArea,
     QSlider,
     QVBoxLayout,
     QWidget,
@@ -123,34 +124,46 @@ class Dashboard(QWidget):
         self._is_initial_launch = is_initial_launch
 
         self.setWindowTitle("DoomScroll Detox - Dashboard")
-        self.setMinimumSize(520, 640)
+        self.setMinimumSize(540, 680)
         self._build_ui()
         self._load_current_settings()
 
     # -- Layout -------------------------------------------------------------
 
     def _build_ui(self) -> None:
-        root = QVBoxLayout(self)
-        root.setContentsMargins(28, 28, 28, 28)
-        root.setSpacing(18)
+        root_layout = QVBoxLayout(self)
+        root_layout.setContentsMargins(0, 0, 0, 0)
+
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setStyleSheet("QScrollArea { border: none; background-color: #0a0a10; }")
+
+        container = QWidget()
+        container.setStyleSheet("background-color: #0a0a10;")
+        layout = QVBoxLayout(container)
+        layout.setContentsMargins(28, 28, 28, 28)
+        layout.setSpacing(20)
 
         title = QLabel("DoomScroll Detox")
         title.setObjectName("titleLabel")
         subtitle = QLabel("Set up your focus profile before you lock in.")
         subtitle.setObjectName("subtitleLabel")
-        root.addWidget(title)
-        root.addWidget(subtitle)
+        layout.addWidget(title)
+        layout.addWidget(subtitle)
 
-        root.addWidget(self._build_major_goal_card())
-        root.addWidget(self._build_severity_card())
-        root.addWidget(self._build_blacklist_card(), stretch=1)
+        layout.addWidget(self._build_major_goal_card())
+        layout.addWidget(self._build_severity_card())
+        layout.addWidget(self._build_blacklist_card())
 
         self._lock_in_button = QPushButton(
             "LOCK IN" if self._is_initial_launch else "SAVE CHANGES"
         )
         self._lock_in_button.setObjectName("lockInButton")
         self._lock_in_button.clicked.connect(self._handle_lock_in)
-        root.addWidget(self._lock_in_button)
+        layout.addWidget(self._lock_in_button)
+
+        scroll.setWidget(container)
+        root_layout.addWidget(scroll)
 
     def _build_major_goal_card(self) -> QFrame:
         card = QFrame()

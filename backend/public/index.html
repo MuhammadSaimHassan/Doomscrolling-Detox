@@ -149,10 +149,41 @@
     @media (max-width: 900px) {
       main {
         grid-template-columns: 1fr;
-        padding: 20px;
+        padding: 20px 15px;
+        gap: 20px;
       }
       header {
         padding: 15px 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 20px 16px;
+        border-radius: 16px;
+      }
+      .timer-display {
+        font-size: 3rem;
+      }
+      .btn-row {
+        flex-direction: column;
+      }
+      .stats-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .toast-container {
+        left: 15px;
+        right: 15px;
+        bottom: 20px;
+      }
+      .toast {
+        max-width: 100%;
+      }
+      .modal-card {
+        padding: 24px 18px;
       }
     }
 

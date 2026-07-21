@@ -219,6 +219,16 @@ QComboBox {
     border-radius: 8px;
     padding: 8px 12px;
     font-size: 14px;
+    min-height: 24px;
+}
+
+QComboBox QLineEdit {
+    border: none;
+    padding: 0px 4px;
+    background: transparent;
+    color: #ffffff;
+    selection-background-color: #ff2e97;
+    selection-color: #ffffff;
 }
 
 QComboBox:hover {
@@ -250,6 +260,34 @@ QComboBox QAbstractItemView {
     selection-background-color: #6a3fd6;
     selection-color: #ffffff;
     outline: none;
+}
+
+/* Scrollbars */
+QScrollBar:vertical {
+    border: none;
+    background: #14131c;
+    width: 8px;
+    margin: 0px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical {
+    background: #6a3fd6;
+    min-height: 20px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #ff2e97;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+    background: none;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
 }
 
 /* -------------------------------------------------------------------------
